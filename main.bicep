@@ -1,5 +1,5 @@
 @secure()
-param adminPassword string
+param adminPassword string = 'ArcDemo123!!'
 
 module virtualNetwork 'br/public:avm/res/network/virtual-network:0.2.0' = {
   name: 'virtualNetwork'
@@ -80,8 +80,8 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.3.0' = {
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    skuCapacity: 1
-    upgradePolicyMode: 'Automatic'
+    skuCapacity: 2
+    upgradePolicyMode: 'Manual'
     nicConfigurations:  [
       {
         enableAcceleratedNetworking: false
@@ -93,9 +93,11 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.3.0' = {
               subnet: {
                 id: virtualNetwork.outputs.subnetResourceIds[0]
               }
-              publicIPAddressConfiguration: {
-                name: 'vmss-pip'
-              }
+              loadBalancerBackendAddressPools: [
+                {
+                  id: loadBalancer.outputs.backendpools[0].id
+                }
+            ]
             }
           }
         ]
@@ -113,11 +115,11 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.3.0' = {
       enabled: true
       fileData: [
         {
-          uri: 'https://raw.githubusercontent.com/Azure-Samples/compute-automation-configurations/master/automate-iis.ps1'
+          uri: 'https://raw.githubusercontent.com/sebassem/cloud-incident-readiness/main/scripts/initialize-iis.ps1'
         }
       ]
         protectedSettings: {
-          commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File automate-iis.ps1'
+          commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File initialize-iis.ps1'
         }
     }
     osType: 'Windows'
@@ -125,7 +127,6 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.3.0' = {
   }
 }
 
-/*
 module lbPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.5.1' = {
   name: 'lbPublicIpAddress'
   params: {
@@ -159,9 +160,6 @@ module loadBalancer 'br/public:avm/res/network/load-balancer:0.3.0' = {
       {
         backendAddressPoolName: 'vmssBackendPool'
         backendPort: 80
-        disableOutboundSnat: true
-        enableFloatingIP: false
-        enableTcpReset: false
         frontendIPConfigurationName: 'publicIPConfig1'
         frontendPort: 80
         idleTimeoutInMinutes: 5
@@ -183,4 +181,3 @@ module loadBalancer 'br/public:avm/res/network/load-balancer:0.3.0' = {
     ]
   }
 }
-*/
