@@ -1,19 +1,32 @@
+@description('Virtual machine windows admin username')
+param adminUsername string = 'sebassem'
+
+@description('Virtual machine windows admin password')
 @secure()
-param adminPassword string = 'ArcDemo123!!'
+param adminPassword string
+
+@description('Location for all resources.')
+param location string = resourceGroup().location
+
+@description('Virtual network name')
+param virtualNetworkName string = 'vnet001'
+
+@description('Virtual network address prefix')
+param virtualNetworkAddressPrefix string = '10.0.0.0/16'
 
 module virtualNetwork 'br/public:avm/res/network/virtual-network:0.2.0' = {
   name: 'virtualNetwork'
   params: {
-    name: 'vnet001'
+    name: virtualNetworkName
     addressPrefixes: [
-      '10.0.0.0/16'
+      virtualNetworkAddressPrefix
     ]
     subnets: [
       {
         name: 'subnet001'
-        addressPrefix: '10.0.1.0/24'
+        addressPrefix: cidrSubnet(virtualNetworkAddressPrefix, 24,0)
         networkSecurityGroupResourceId: nsg.outputs.resourceId
-        natGatewayResourceId: natGatweay.outputs.resourceId
+        natGatewayResourceId: natGateway.outputs.resourceId
       }
     ]
   }
@@ -23,22 +36,17 @@ module natGatewayPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.
   name: 'natGwPublicIpAddress'
   params: {
     name: 'natip001'
-    location: resourceGroup().location
+    location: location
     skuName: 'Standard'
-    zones: [
-      1
-      2
-      3
-    ]
   }
 }
 
-module natGatweay 'br/public:avm/res/network/nat-gateway:1.1.0' = {
-  name: 'natGatweay'
+module natGateway 'br/public:avm/res/network/nat-gateway:1.1.0' = {
+  name: 'natGateway'
   params: {
     name: 'natgw001'
     zone: 0
-    location: resourceGroup().location
+    location: location
     publicIpResourceIds: [
       natGatewayPublicIpAddress.outputs.resourceId
     ]
@@ -49,7 +57,7 @@ module nsg 'br/public:avm/res/network/network-security-group:0.4.0' = {
   name: 'nsg'
   params: {
     name: 'nsg001'
-    location: resourceGroup().location
+    location: location
     securityRules: [
       {
         name: 'Allow-HTTP'
@@ -72,7 +80,7 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.3.0' = {
   name: 'vmss'
   params: {
     name: 'vmss'
-    adminUsername: 'sebassem'
+    adminUsername: adminUsername
     adminPassword: adminPassword
     imageReference: {
       offer: 'WindowsServer'
@@ -131,13 +139,8 @@ module lbPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.5.1' = {
   name: 'lbPublicIpAddress'
   params: {
     name: 'lbip001'
-    location: resourceGroup().location
+    location: location
     skuName: 'Standard'
-    zones: [
-      1
-      2
-      3
-    ]
   }
 }
 
