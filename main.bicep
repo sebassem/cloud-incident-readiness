@@ -14,10 +14,6 @@ param virtualNetworkName string = 'vnet001'
 @description('Virtual network address prefix')
 param virtualNetworkAddressPrefix string = '10.0.0.0/16'
 
-@description('Virtual machine SKU name')
-param vmSkuName string = 'Standard_D2s_v5'
-
-
 module networking 'modules/networking.bicep' = {
   name: 'networking'
   params: {
@@ -83,7 +79,7 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
         }
     }
     osType: 'Windows'
-    skuName: vmSkuName
+    skuName: 'Standard_D2s_v5'
   }
 }
 
