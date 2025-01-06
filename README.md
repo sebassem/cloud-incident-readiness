@@ -13,18 +13,10 @@ scripts/
     deploy-webapp.ps1
 ```
 
--main.bicep
-
-: The main Bicep file that orchestrates the deployment of all resources.
--networking.bicep
-
-: A module for deploying networking resources such as virtual networks, NAT gateways, network security groups (NSGs), and load balancers.
--utilities.bicep
-
-: A module for deploying utility resources and role assignments.
--deploy-webapp.ps1
-
-: A PowerShell script to set up a web application on the VMSS instances.
+- main.bicep : The main Bicep file that orchestrates the deployment of all resources.
+- networking.bicep : A module for deploying networking resources such as virtual networks, NAT gateways, network security groups (NSGs), and load balancers.
+- utilities.bicep: A module for deploying utility resources and role assignments.
+- deploy-webapp.ps1: A PowerShell script to set up a web application on the VMSS instances.
 
 ## Deployment Overview
 
@@ -82,8 +74,3 @@ az deployment group create --resource-group <resource-group-name> --template-fil
 ```
 
 Replace `<resource-group-name>` with the name of your Azure resource group.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-```
