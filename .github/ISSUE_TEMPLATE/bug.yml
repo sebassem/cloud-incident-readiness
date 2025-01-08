@@ -1,54 +1,64 @@
-name: New subscription request
-description: Request a new Azure Subscription
+name: Bug
+description: File a bug report
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this form. Please provide the below details for your new subscription.
+        Before opening a bug report, please search for the behaviour in the existing issues. 
+        
+        ---
+        
+        Thank you for taking the time to file a bug report. To address this bug as fast as possible, we need some information.
   - type: input
-    id: displayName
+    id: os
     attributes:
-      label: Subscription display name
-      description: What will be the display name of the subscription?
-      placeholder: ex. sub-nexus-project-prod
+      label: Operating system
+      description: "Which operating system do you use? Please provide the version as well."
+      placeholder: "macOS Big Sur 11.5.2"
+    validations:
+      required: true  
+  - type: input
+    id: laravel
+    attributes:
+      label: Laravel Version
+      description: "Please provide the full Laravel version of your project."
+      placeholder: "v8.6.1"
+    validations:
+      required: true
+  - type: input
+    id: php
+    attributes:
+      label: PHP Version
+      description: "Please provide the full PHP version that is powering Tinkerwell."
+      placeholder: "PHP 8.0.7, built: Jun  4 2021 01:50:04"
     validations:
       required: true
   - type: dropdown
-    id: virtualNetworkEnabled
+    id: location
     attributes:
-      label: Deploy a virtual network?
-      description: Option to deploy a virtual network into the new subscription.
+      label: Project Location
+      description: Where is the project located?
       options:
-        - No (Default)
-        - Yes
-      default: 0
+        - Local
+        - Remote
+        - Somewhere else (please specify in the description!)
     validations:
-      required: false
+      required: true
   - type: textarea
-    id: virtualNetworkAddressSpace
+    id: bug-description
     attributes:
-      label: Virtual network address spaces
-      description: The address spaces for the virtual network to be created.
-      placeholder: ex. [10.0.0.0/16]
-      value: "[10.0.0.0/16]"
+      label: Bug description
+      description: What happened?
     validations:
-      required: false
-  - type: dropdown
-    id: virtualNetworkPeeringEnabled
-    attributes:
-      label: Enable peering of the virtual network with the platform's hub network?
-      description: Option to peer the new virtual network with the platform's hub network.
-      options:
-        - No (Default)
-        - Yes
-      default: 0
-    validations:
-      required: false
+      required: true
   - type: textarea
-    id: hubNetworkResourceId
+    id: steps
     attributes:
-      label: Hub network resource Id
-      description: The resource ID of the Virtual Network or Virtual WAN Hub in the hub to which the created Virtual Network.
-      placeholder: ex. /subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rsg-uks-net-vwan-001/providers/Microsoft.Network/virtualHubs/vhub-uks-001
-    validations:
-      required: false
+      label: Steps to reproduce
+      description: Which steps do we need to take to reproduce this error?
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: If applicable, provide relevant log output. No need for backticks here.
+      render: shell
