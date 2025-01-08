@@ -21,20 +21,22 @@ body:
   validations:
     required: true
 - type: textarea
+  id: virtualNetworkAddressSpace
   attributes:
-    label: Expected Behavior
-    description: A concise description of what you expected to happen.
+    label: Virtual network address spaces
+    description: "The address spaces for the virtual network to be created."
+    placeholder: "ex. [10.0.0.0/16]"
   validations:
     required: false
-- type: textarea
+- type: dropdown
+  id: virtualNetworkPeeringEnabled
   attributes:
-    label: Steps To Reproduce
-    description: Steps to reproduce the behavior.
-    placeholder: |
-      1. In this environment...
-      1. With this config...
-      1. Run '...'
-      1. See error...
+    label: Enable virtual network peering
+    description: "Option to peer the new virtual network with the platform's hub network."
+    options:
+      - No (Default)
+      - "Yes"
+    default: 0
   validations:
     required: false
 - type: textarea
