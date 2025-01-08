@@ -2,6 +2,10 @@ name: 🐞 Subscription
 description: Request a new Azure Subscription
 title: "<Project name>"
 body:
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to fill out this form. Please provide the below details for your new subscription.
 - type: checkboxes
   attributes:
     label: Is there an existing issue for this?
