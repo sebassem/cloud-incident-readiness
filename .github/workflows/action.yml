@@ -7,11 +7,11 @@ jobs:
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
-          template-path: .github/ISSUE_TEMPLATE/bug-report.yml # optional but recommended
+          template-path: .github/ISSUE_TEMPLATE/newSub.yml # optional but recommended
 
       - run: cat ${HOME}/issue-parser-result.json
 
-      - run: echo $FAVORITE_DISH
+      - run: echo $displayName
         env:
-          FAVORITE_DISH: ${{ steps.issue-parser.outputs.issueparser_favorite_dish }}
+          displayName: ${{ steps.issue-parser.outputs.issueparser_displayName }}
 
