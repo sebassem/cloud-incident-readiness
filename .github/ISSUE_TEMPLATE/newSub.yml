@@ -1,5 +1,6 @@
 name: Subscription
 description: Request a new Azure Subscription
+title: "<Project name>"
 body:
   - type: markdown
     attributes:
