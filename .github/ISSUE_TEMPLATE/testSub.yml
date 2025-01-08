@@ -10,12 +10,16 @@ body:
     placeholder: "ex. sub-nexus-project-prod"
   validations:
     required: true
-- type: textarea
+- type: dropdown
+  id: virtualNetworkEnabled
   attributes:
-    label: Current Behavior
-    description: A concise description of what you're experiencing.
+    label: Deploy a virtual network?
+    description: "Option to deploy a virtual network into the new subscription."
+    options:
+      - No (Default)
+      - Yes
   validations:
-    required: false
+    required: true
 - type: textarea
   attributes:
     label: Expected Behavior
