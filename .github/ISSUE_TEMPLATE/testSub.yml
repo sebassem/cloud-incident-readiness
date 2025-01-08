@@ -17,7 +17,7 @@ body:
     description: "Option to deploy a virtual network into the new subscription."
     options:
       - No (Default)
-      - Yes (Default)
+      - "Yes"
   validations:
     required: true
 - type: textarea
