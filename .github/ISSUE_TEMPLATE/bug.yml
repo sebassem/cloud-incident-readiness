@@ -1,59 +1,54 @@
-name: Bug Report
-description: File a bug report.
+name: New subscription request
+description: Request a new Azure Subscription
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        Thanks for taking the time to fill out this form. Please provide the below details for your new subscription.
   - type: input
-    id: contact
+    id: displayName
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
+      label: Subscription display name
+      description: What will be the display name of the subscription?
+      placeholder: ex. sub-nexus-project-prod
+    validations:
+      required: true
+  - type: dropdown
+    id: virtualNetworkEnabled
+    attributes:
+      label: Deploy a virtual network?
+      description: Option to deploy a virtual network into the new subscription.
+      options:
+        - No (Default)
+        - Yes
+      default: 0
     validations:
       required: false
   - type: textarea
-    id: what-happened
+    id: virtualNetworkAddressSpace
     attributes:
-      label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+      label: Virtual network address spaces
+      description: The address spaces for the virtual network to be created.
+      placeholder: ex. [10.0.0.0/16]
+      value: "[10.0.0.0/16]"
     validations:
-      required: true
+      required: false
   - type: dropdown
-    id: version
+    id: virtualNetworkPeeringEnabled
     attributes:
-      label: Version
-      description: What version of our software are you running?
+      label: Enable peering of the virtual network with the platform's hub network?
+      description: Option to peer the new virtual network with the platform's hub network.
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - No (Default)
+        - Yes
       default: 0
     validations:
-      required: true
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+      required: false
   - type: textarea
-    id: logs
+    id: hubNetworkResourceId
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
-  - type: checkboxes
-    id: terms
-    attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com). 
-      options:
-        - label: I agree to follow this project's Code of Conduct
-          required: true
+      label: Hub network resource Id
+      description: The resource ID of the Virtual Network or Virtual WAN Hub in the hub to which the created Virtual Network.
+      placeholder: ex. /subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rsg-uks-net-vwan-001/providers/Microsoft.Network/virtualHubs/vhub-uks-001
+    validations:
+      required: false

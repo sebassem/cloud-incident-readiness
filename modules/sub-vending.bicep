@@ -14,3 +14,4 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     subscriptionManagementGroupId: 'alz-corp'
   }
 }
+
