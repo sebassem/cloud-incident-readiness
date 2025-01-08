@@ -11,7 +11,7 @@ jobs:
 
       - run: cat ${HOME}/issue-parser-result.json
 
-      - run: echo $displayName
+      - run: echo $subscription_display_name
         env:
-          displayName: ${{ steps.issue-parser.outputs.issueparser_displayName }}
+          displayName: ${{ steps.issue-parser.outputs.issueparser_subscription_display_name }}
 
