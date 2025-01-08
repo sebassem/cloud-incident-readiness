@@ -1,7 +1,5 @@
 name: Subscription
 description: Request a new Azure Subscription
-title: "[Subscription]: "
-labels: ["subscription-request"]
 body:
   - type: markdown
     attributes:
@@ -22,7 +20,7 @@ body:
       description: "Option to deploy a virtual network into the new subscription."
       options:
         - Deploy
-        - Don't deploy
+        - Don't
     validations:
       required: true
   - type: textarea

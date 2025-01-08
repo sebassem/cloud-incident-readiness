@@ -1,9 +1,11 @@
 name: Subscription
 description: Request new subscription
 body:
-  - type: markdown
+  - type: input
+    id: os
     attributes:
-      value: |
-        Before opening a bug report, please search for the behaviour in the existing issues.
-        ---
-        Thank you for taking the time to file a bug report. To address this bug as fast as possible, we need some information.
+      label: Operating system
+      description: "Which operating system do you use? Please provide the version as well."
+      placeholder: "macOS Big Sur 11.5.2"
+    validations:
+      required: true
