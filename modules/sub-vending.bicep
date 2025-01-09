@@ -5,7 +5,7 @@ param displayName string = 'HRphoneix'
 
 param virtualNetworkEnabled string = 'No'
 
-param virtualNetworkAddressSpace string = '[]'
+param virtualNetworkAddressSpace string = '10.0.0.0/16'
 
 param virtualNetworkPeeringEnabled string = 'No'
 
