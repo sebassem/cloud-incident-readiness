@@ -11,6 +11,10 @@ param virtualNetworkPeeringEnabled string = 'No'
 
 param hubNetworkResourceId string = ''
 
+var vnetName = toLower('vnet-${displayName}')
+
+var vnetResourceGroupName = toLower('rg-${displayName}-vnet')
+
 var addressSpace = [virtualNetworkAddressSpace]
 
 module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
@@ -22,12 +26,14 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     subscriptionManagementGroupAssociationEnabled: true
     subscriptionManagementGroupId: 'alz-corp'
     virtualNetworkEnabled: virtualNetworkEnabled == 'No' ? false : true
-    virtualNetworkName: toLower('vnet-${displayName}')
-    virtualNetworkResourceGroupName: toLower('rg-${displayName}-vnet')
+    virtualNetworkName: vnetName
+    virtualNetworkResourceGroupName: vnetResourceGroupName
     virtualNetworkAddressSpace: addressSpace
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
     virtualNetworkResourceGroupLockEnabled: false
-
   }
 }
+
+output vnetName string = vnetName
+output vnetResourceGroup string = vnetResourceGroupName
