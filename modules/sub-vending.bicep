@@ -27,6 +27,7 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     virtualNetworkAddressSpace: addressSpace
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
+    virtualNetworkResourceGroupLockEnabled: false
 
   }
 }
