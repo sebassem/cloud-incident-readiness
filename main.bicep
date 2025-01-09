@@ -27,7 +27,7 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
       version: 'latest'
     }
     skuCapacity: 3
-    upgradePolicyMode: 'Automatic'
+    upgradePolicyMode: 'Manual'
     encryptionAtHost: false
     nicConfigurations:  [
       {
