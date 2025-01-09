@@ -90,3 +90,12 @@ module updateVMSS 'br/public:avm/res/resources/deployment-script:0.5.1' = {
     '''
   }
 }
+
+resource chaosStudio 'Microsoft.Chaos/experiments@2024-03-22-preview' = {
+  name: 'chaosStudio'
+  location: location
+  properties: {
+    selectors: []
+    steps: []
+  }
+}
