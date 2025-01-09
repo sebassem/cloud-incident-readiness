@@ -20,7 +20,7 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     subscriptionManagementGroupAssociationEnabled: true
     subscriptionManagementGroupId: 'alz-corp'
     virtualNetworkEnabled: virtualNetworkEnabled == 'No' ? false : true
-    virtualNetworkAddressSpace: json(virtualNetworkAddressSpace)
+    virtualNetworkAddressSpace: array(virtualNetworkAddressSpace)
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
 
