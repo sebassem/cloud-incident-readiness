@@ -116,8 +116,6 @@ module loadBalancer 'br/public:avm/res/network/load-balancer:0.4.1' = {
 
 output nsgId string = nsg.outputs.resourceId
 output natGatewayId string = natGateway.outputs.resourceId
-//output virtualNetworkId string = virtualNetwork.outputs.resourceId
-//output virtualNetworkSubnets array = virtualNetwork.outputs.subnetResourceIds
 output virtualNetworkId string = vnet.id
 output virtualNetworkSubnetResourceId string = vnet.properties.subnets[0].id
 output loadBalancerIpAddress string = lbPublicIpAddress.outputs.ipAddress
