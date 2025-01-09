@@ -86,7 +86,7 @@ module updateVMSS 'br/public:avm/res/resources/deployment-script:0.5.1' = {
     timeout: 'P1D'
     scriptContent: '''
       az login --identity
-      az vmss update-instances --resource-group $resourceGroup --name $vmssName --instance-ids "*" --only-show-errors
+      az vmss update-instances --resource-group $resourceGroup --name $vmssName --instance-ids "*" --only-show-errors --no-wait
     '''
   }
 }
