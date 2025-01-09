@@ -73,7 +73,6 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
     skuName: 'Standard_D2s_v5'
   }
 }
-
 module utilities 'modules/utilities.bicep' = {
   name: 'utilities'
   params: {
