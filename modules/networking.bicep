@@ -1,13 +1,6 @@
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Virtual network name')
-param virtualNetworkName string = 'vnet001'
-
-@description('Virtual network address prefix')
-param virtualNetworkAddressPrefix string = '10.0.0.0/16'
-
-
 resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' existing = {
   name: 'vnet-hrphoenix'
 }
@@ -25,25 +18,6 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
     }
   }
 }
-
-/*module virtualNetwork 'br/public:avm/res/network/virtual-network:0.5.2' = {
-  name: 'virtualNetwork'
-  params: {
-    name: virtualNetworkName
-    addressPrefixes: [
-      virtualNetworkAddressPrefix
-    ]
-    subnets: [
-      {
-        name: 'subnet001'
-        addressPrefix: cidrSubnet(virtualNetworkAddressPrefix, 24,0)
-        networkSecurityGroupResourceId: nsg.outputs.resourceId
-        natGatewayResourceId: natGateway.outputs.resourceId
-      }
-    ]
-  }
-}*/
-
 module natGatewayPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.7.1' = {
   name: 'natGwPublicIpAddress'
   params: {
@@ -145,7 +119,7 @@ output natGatewayId string = natGateway.outputs.resourceId
 //output virtualNetworkId string = virtualNetwork.outputs.resourceId
 //output virtualNetworkSubnets array = virtualNetwork.outputs.subnetResourceIds
 output virtualNetworkId string = vnet.id
-output virtualNetworkSubnets array = vnet.properties.subnets
+output virtualNetworkSubnetResourceId string = vnet.properties.subnets[0].id
 output loadBalancerIpAddress string = lbPublicIpAddress.outputs.ipAddress
 output lbResourceId string = loadBalancer.outputs.resourceId
 output backendpools array = loadBalancer.outputs.backendpools

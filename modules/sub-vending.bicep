@@ -13,7 +13,7 @@ param hubNetworkResourceId string = ''
 
 var vnetName = toLower('vnet-${displayName}')
 
-var vnetResourceGroupName = toLower('rg-${displayName}-vnet')
+var vnetResourceGroupName = toLower('rg-${displayName}')
 
 var addressSpace = [virtualNetworkAddressSpace]
 

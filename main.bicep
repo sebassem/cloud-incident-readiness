@@ -8,18 +8,10 @@ param adminPassword string
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Virtual network name')
-param virtualNetworkName string = 'vnet001'
-
-@description('Virtual network address prefix')
-param virtualNetworkAddressPrefix string = '10.0.0.0/16'
-
 module networking 'modules/networking.bicep' = {
   name: 'networking'
   params: {
     location: location
-    virtualNetworkAddressPrefix: virtualNetworkAddressPrefix
-    virtualNetworkName: virtualNetworkName
   }
 }
 module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
@@ -46,7 +38,7 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: networking.outputs.virtualNetworkSubnets[0].id
+                id: networking.outputs.virtualNetworkSubnetResourceId
               }
               loadBalancerBackendAddressPools: [
                 {
