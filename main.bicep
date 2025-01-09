@@ -22,7 +22,6 @@ module networking 'modules/networking.bicep' = {
     virtualNetworkName: virtualNetworkName
   }
 }
-
 module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
   name: 'vmss'
   params: {
@@ -47,7 +46,7 @@ module vmss 'br/public:avm/res/compute/virtual-machine-scale-set:0.5.0' = {
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: networking.outputs.virtualNetworkSubnets[0]
+                id: networking.outputs.virtualNetworkSubnets[0].id
               }
               loadBalancerBackendAddressPools: [
                 {

@@ -7,7 +7,26 @@ param virtualNetworkName string = 'vnet001'
 @description('Virtual network address prefix')
 param virtualNetworkAddressPrefix string = '10.0.0.0/16'
 
-module virtualNetwork 'br/public:avm/res/network/virtual-network:0.5.2' = {
+
+resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' existing = {
+  name: 'vnet-hrphoenix'
+}
+
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
+  name: 'subnet001'
+  parent: vnet
+  properties: {
+    addressPrefix: '10.0.1.0/24'
+    networkSecurityGroup: {
+      id: nsg.outputs.resourceId
+    }
+    natGateway: {
+      id: natGateway.outputs.resourceId
+    }
+  }
+}
+
+/*module virtualNetwork 'br/public:avm/res/network/virtual-network:0.5.2' = {
   name: 'virtualNetwork'
   params: {
     name: virtualNetworkName
@@ -23,7 +42,7 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.5.2' = {
       }
     ]
   }
-}
+}*/
 
 module natGatewayPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.7.1' = {
   name: 'natGwPublicIpAddress'
@@ -123,8 +142,10 @@ module loadBalancer 'br/public:avm/res/network/load-balancer:0.4.1' = {
 
 output nsgId string = nsg.outputs.resourceId
 output natGatewayId string = natGateway.outputs.resourceId
-output virtualNetworkId string = virtualNetwork.outputs.resourceId
-output virtualNetworkSubnets array = virtualNetwork.outputs.subnetResourceIds
+//output virtualNetworkId string = virtualNetwork.outputs.resourceId
+//output virtualNetworkSubnets array = virtualNetwork.outputs.subnetResourceIds
+output virtualNetworkId string = vnet.id
+output virtualNetworkSubnets array = vnet.properties.subnets
 output loadBalancerIpAddress string = lbPublicIpAddress.outputs.ipAddress
 output lbResourceId string = loadBalancer.outputs.resourceId
 output backendpools array = loadBalancer.outputs.backendpools
