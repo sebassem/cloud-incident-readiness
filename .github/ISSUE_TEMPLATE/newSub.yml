@@ -16,7 +16,7 @@ body:
     label: Deploy a virtual network?
     description: "Option to deploy a virtual network into the new subscription."
     options:
-      - No (Default)
+      - "No"
       - "Yes"
     default: 0
   validations:
@@ -35,7 +35,7 @@ body:
     label: Enable virtual network peering
     description: "Option to peer the new virtual network with the platform's hub network."
     options:
-      - No (Default)
+      - "No"
       - "Yes"
     default: 0
   validations:

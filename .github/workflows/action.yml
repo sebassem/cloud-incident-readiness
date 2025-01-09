@@ -1,5 +1,7 @@
-name: Issue Forms Body Parser
-on: issues
+name: Deploy to Azure
+on:
+  issues:
+    types: [closed]
 jobs:
   process:
     runs-on: ubuntu-latest
@@ -7,11 +9,15 @@ jobs:
       - uses: stefanbuck/github-issue-parser@v3
         id: issue-parser
         with:
-          template-path: .github/ISSUE_TEMPLATE/newSub.yml # optional but recommended
+          template-path: .github/ISSUE_TEMPLATE/newSub.yml
 
       - run: cat ${HOME}/issue-parser-result.json
 
-      - run: echo $displayName
+      - run: echo "Fetching subscription properties."
         env:
           displayName: ${{ steps.issue-parser.outputs.issueparser_subscription_display_name }}
+          virtualNetworkEnabled: ${{ steps.issue-parser.outputs.issueparser_deploy_a_virtual_network }}
+          virtualNetworkAddressSpace: ${{ steps.issue-parser.outputs.issueparser_virtual_network_address_spaces }}
+          virtualNetworkPeeringEnabled: ${{ steps.issue-parser.outputs.issueparser_enable_virtual_network_peering }}
+          hubNetworkResourceId: ${{ steps.issue-parser.outputs.issueparser_hub_network_resource_id }}
 
