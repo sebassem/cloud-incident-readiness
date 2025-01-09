@@ -3,7 +3,7 @@ targetScope = 'managementGroup'
 @description('Subscription display name.')
 param displayName string = 'HRphoneix'
 
-param virtualNetworkEnabled string = 'No'
+param virtualNetworkEnabled string = 'Yes'
 
 param virtualNetworkAddressSpace string = '10.0.0.0/16'
 
@@ -22,6 +22,8 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     subscriptionManagementGroupAssociationEnabled: true
     subscriptionManagementGroupId: 'alz-corp'
     virtualNetworkEnabled: virtualNetworkEnabled == 'No' ? false : true
+    virtualNetworkName: 'vnet-${displayName}'
+    virtualNetworkResourceGroupName: 'rg-${displayName}-vnet'
     virtualNetworkAddressSpace: addressSpace
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
