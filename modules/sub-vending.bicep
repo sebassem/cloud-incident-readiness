@@ -22,8 +22,8 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     subscriptionManagementGroupAssociationEnabled: true
     subscriptionManagementGroupId: 'alz-corp'
     virtualNetworkEnabled: virtualNetworkEnabled == 'No' ? false : true
-    virtualNetworkName: 'vnet-${displayName}'
-    virtualNetworkResourceGroupName: 'rg-${displayName}-vnet'
+    virtualNetworkName: toLower('vnet-${displayName}')
+    virtualNetworkResourceGroupName: toLower('rg-${displayName}-vnet')
     virtualNetworkAddressSpace: addressSpace
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
