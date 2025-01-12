@@ -30,7 +30,6 @@ module subscriptionVending 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
         definition: 'Contributor'
         principalId: 'a9d32637-e42f-4e20-808c-83a6ed3d2874'
         relativeScope: ''
-        principalType: 'Group'
       }
     ]
   }
