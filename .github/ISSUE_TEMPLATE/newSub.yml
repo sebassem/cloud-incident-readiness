@@ -13,7 +13,7 @@ body:
 - type: input
   id: workloadAdminGroup
   attributes:
-    label: Entra ID group for workload administrators
+    label: workload admin group
     description: "Entra ID group for workload administrators."
     placeholder: "XXXX-XXXXX-XXXXXXX-XXXXXX"
   validations:
