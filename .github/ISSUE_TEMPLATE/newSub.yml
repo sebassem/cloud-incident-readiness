@@ -21,7 +21,7 @@ body:
 - type: dropdown
   id: virtualNetworkEnabled
   attributes:
-    label: Deploy a virtual network?
+    label: Deploy a virtual network
     description: "Option to deploy a virtual network into the new subscription."
     options:
       - "No"
