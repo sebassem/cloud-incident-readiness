@@ -19,6 +19,9 @@ var vnetResourceGroupName = toLower('rg-${displayName}')
 
 var addressSpace = [virtualNetworkAddressSpace]
 
+var contributorRoleDefinitionId = '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+
+
 module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
   name: '${displayName}-sub-deployment'
   params: {
@@ -37,10 +40,9 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     roleAssignmentEnabled: !empty(workloadAdminGroup) ? true : false
     roleAssignments: !empty(workloadAdminGroup) ? [
       {
-        definition: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        definition: contributorRoleDefinitionId
         principalId: workloadAdminGroup
         relativeScope: ''
-        principalType: 'Group'
       }
     ] : null
   }

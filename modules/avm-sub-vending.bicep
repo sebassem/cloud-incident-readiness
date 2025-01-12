@@ -9,7 +9,7 @@ param subscriptionBillingScope string = 'providers/Microsoft.Billing/billingAcco
 @description('Optional. The workload admin group.')
 param workloadAdminGroup string = 'a9d32637-e42f-4e20-808c-83a6ed3d2874'
 
-var contributorRoleDefinitionId = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+var contributorRoleDefinitionId = '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
 
 
 
