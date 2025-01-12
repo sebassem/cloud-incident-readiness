@@ -27,7 +27,7 @@ module subscriptionVending 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     roleAssignmentEnabled: true
     roleAssignments: [
       {
-        definition: 'Contributor'
+        definition: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
         principalId: 'a9d32637-e42f-4e20-808c-83a6ed3d2874'
         relativeScope: ''
       }
