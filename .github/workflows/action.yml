@@ -54,4 +54,4 @@ jobs:
           hubNetworkResourceId: ${{ needs.ParseSubscriptionProperties.outputs.hubNetworkResourceId }}
           workloadAdminGroup: ${{ needs.ParseSubscriptionProperties.outputs.workloadAdminGroup }}
         run: |
-          az deployment mg create -f ./modules/sub-vending.bicep -p displayName=${displayName} virtualNetworkEnabled=${virtualNetworkEnabled} virtualNetworkAddressSpace=${virtualNetworkAddressSpace} virtualNetworkPeeringEnabled=${virtualNetworkPeeringEnabled} hubNetworkResourceId=${hubNetworkResourceId} -l swedencentral -m alz-corp
+          az deployment mg create -f ./modules/sub-vending.bicep -p displayName=${displayName} virtualNetworkEnabled=${virtualNetworkEnabled} virtualNetworkAddressSpace=${virtualNetworkAddressSpace} virtualNetworkPeeringEnabled=${virtualNetworkPeeringEnabled} hubNetworkResourceId=${hubNetworkResourceId} workloadAdminGroup=${workloadAdminGroup} -l swedencentral -m alz-corp
