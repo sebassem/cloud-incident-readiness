@@ -11,6 +11,8 @@ param virtualNetworkPeeringEnabled string = 'No'
 
 param hubNetworkResourceId string = ''
 
+param workloadAdminGroup string = ''
+
 var vnetName = toLower('vnet-${displayName}')
 
 var vnetResourceGroupName = toLower('rg-${displayName}')
@@ -32,6 +34,14 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
     virtualNetworkResourceGroupLockEnabled: false
+    roleAssignments: !empty(workloadAdminGroup) ? [
+      {
+        definition: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        principalId: workloadAdminGroup
+        relativeScope: ''
+        principalType: 'Group'
+      }
+    ] : null
   }
 }
 

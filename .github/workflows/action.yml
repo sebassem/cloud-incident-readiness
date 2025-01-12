@@ -23,12 +23,14 @@ jobs:
           virtualNetworkAddressSpace: ${{ steps.issue-parser.outputs.issueparser_virtual_network_address_spaces }}
           virtualNetworkPeeringEnabled: ${{ steps.issue-parser.outputs.issueparser_enable_virtual_network_peering }}
           hubNetworkResourceId: ${{ steps.issue-parser.outputs.issueparser_hub_network_resource_id }}
+          workloadAdminGroup: ${{ steps.issue-parser.outputs.issueparser_workload_admin_group }}
     outputs:
             displayName: ${{ steps.issue-parser.outputs.issueparser_subscription_display_name }}
             virtualNetworkEnabled: ${{ steps.issue-parser.outputs.issueparser_deploy_a_virtual_network }}
             virtualNetworkAddressSpace: ${{ steps.issue-parser.outputs.issueparser_virtual_network_address_spaces }}
             virtualNetworkPeeringEnabled: ${{ steps.issue-parser.outputs.issueparser_enable_virtual_network_peering }}
             hubNetworkResourceId: ${{ steps.issue-parser.outputs.issueparser_hub_network_resource_id }}
+            workloadAdminGroup: ${{ steps.issue-parser.outputs.issueparser_workload_admin_group }}
 
   DeployToAzure:
     runs-on: ubuntu-latest
@@ -50,5 +52,6 @@ jobs:
           virtualNetworkAddressSpace: ${{ needs.ParseSubscriptionProperties.outputs.virtualNetworkAddressSpace }}
           virtualNetworkPeeringEnabled: ${{ needs.ParseSubscriptionProperties.outputs.virtualNetworkPeeringEnabled }}
           hubNetworkResourceId: ${{ needs.ParseSubscriptionProperties.outputs.hubNetworkResourceId }}
+          workloadAdminGroup: ${{ needs.ParseSubscriptionProperties.outputs.workloadAdminGroup }}
         run: |
-         az deployment mg create -f ./modules/sub-vending.bicep -p displayName=${displayName} virtualNetworkEnabled=${virtualNetworkEnabled} virtualNetworkAddressSpace=${virtualNetworkAddressSpace} virtualNetworkPeeringEnabled=${virtualNetworkPeeringEnabled} hubNetworkResourceId=${hubNetworkResourceId} -l swedencentral -m alz-corp
+          az deployment mg create -f ./modules/sub-vending.bicep -p displayName=${displayName} virtualNetworkEnabled=${virtualNetworkEnabled} virtualNetworkAddressSpace=${virtualNetworkAddressSpace} virtualNetworkPeeringEnabled=${virtualNetworkPeeringEnabled} hubNetworkResourceId=${hubNetworkResourceId} -l swedencentral -m alz-corp

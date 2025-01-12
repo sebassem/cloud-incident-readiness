@@ -18,6 +18,115 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
     }
   }
 }
+
+resource dsSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
+  name: 'dssubnet'
+  parent: vnet
+  dependsOn: [
+    subnet
+  ]
+  properties: {
+    addressPrefix: '10.0.2.0/24'
+    networkSecurityGroup: {
+      id: nsg.outputs.resourceId
+    }
+    serviceEndpoints: [
+      {
+        service: 'Microsoft.Storage'
+      }
+    ]
+    delegations: [
+      {
+        name: 'containerDelegation'
+        properties: {
+          serviceName: 'Microsoft.ContainerInstance/containerGroups'
+        }
+      }
+    ]
+  }
+}
+
+resource peSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = {
+  name: 'peSubnet'
+  parent: vnet
+  dependsOn: [
+    subnet
+    dsSubnet
+  ]
+  properties: {
+    addressPrefix: '10.0.3.0/24'
+    networkSecurityGroup: {
+      id: nsg.outputs.resourceId
+    }
+  }
+}
+
+module deploymentScriptMSI 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.0' = {
+  name: 'deploymentScriptMSI'
+  params: {
+    name: 'msi-deployment-script'
+  }
+}
+
+module storageFileSharePermissions 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.1' = {
+  name: 'storageFileSharePermissions'
+  params: {
+    principalId: deploymentScriptMSI.outputs.principalId
+    resourceId: dsStorageAccount.outputs.resourceId
+    roleDefinitionId: '69566ab7-960f-475b-8e7c-b3118f30c6bd'
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module dsStorageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
+  name: 'dsStorageAccount'
+  dependsOn: [
+    dsSubnet
+    peSubnet
+  ]
+  params: {
+    name: 'stg${uniqueString(resourceGroup().id,location)}'
+    location: location
+    skuName: 'Standard_LRS'
+    kind: 'StorageV2'
+    publicNetworkAccess: 'Disabled'
+    allowSharedKeyAccess: true
+    allowBlobPublicAccess: false
+    networkAcls: {
+      bypass:'AzureServices'
+      defaultAction: 'Deny'
+    }
+    privateEndpoints: [
+      {
+        service: 'file'
+        subnetResourceId: vnet.properties.subnets[2].id
+        privateDnsZoneGroup: {
+          name: 'default'
+          privateDnsZoneGroupConfigs: [
+            {
+              privateDnsZoneResourceId: privateFileDNSZone.outputs.resourceId
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+module privateFileDNSZone 'br/public:avm/res/network/private-dns-zone:0.5.0' = {
+  name: 'fileDnsZone'
+  params: {
+    name: 'privatelink.file.${environment().suffixes.storage}'
+    location: 'global'
+    virtualNetworkLinks: [
+      {
+        name: '${vnet.name}-storageaccount-link'
+        virtualNetworkResourceId: vnet.id
+        registrationEnabled: false
+      }
+    ]
+  }
+}
 module natGatewayPublicIpAddress 'br/public:avm/res/network/public-ip-address:0.7.1' = {
   name: 'natGwPublicIpAddress'
   params: {
@@ -118,6 +227,10 @@ output nsgId string = nsg.outputs.resourceId
 output natGatewayId string = natGateway.outputs.resourceId
 output virtualNetworkId string = vnet.id
 output virtualNetworkSubnetResourceId string = vnet.properties.subnets[0].id
+output deploymentScriptSubnetResourceId string = vnet.properties.subnets[1].id
 output loadBalancerIpAddress string = lbPublicIpAddress.outputs.ipAddress
 output lbResourceId string = loadBalancer.outputs.resourceId
 output backendpools array = loadBalancer.outputs.backendpools
+output deploymentScriptMSIId string = deploymentScriptMSI.outputs.resourceId
+output deploymentScriptMSIPrincipalId string = deploymentScriptMSI.outputs.principalId
+output deploymentScriptStorageAccountResourceId string = dsStorageAccount.outputs.resourceId

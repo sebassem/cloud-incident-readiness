@@ -10,6 +10,14 @@ body:
     placeholder: "ex. sub-nexus-project-prod"
   validations:
     required: true
+- type: textarea
+  id: workloadAdminGroup
+  attributes:
+    label: Entra ID group for workload administrators
+    description: "Entra ID group for workload administrators."
+    placeholder: "XXXX-XXXXX-XXXXXXX-XXXXXX"
+  validations:
+    required: false
 - type: dropdown
   id: virtualNetworkEnabled
   attributes:

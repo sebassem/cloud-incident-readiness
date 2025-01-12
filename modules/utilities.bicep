@@ -15,17 +15,22 @@ param lbResourceId string
 @description('The resource Id of the network security group.')
 param nsgResourceId string
 
-module deploymentScriptMSI 'br/public:avm/res/managed-identity/user-assigned-identity:0.4.0' = {
-  name: 'deploymentScriptMSI'
-  params: {
-    name: 'msi-deployment-script-001'
-  }
-}
+@description('The principal Id of the deployment script managed identity.')
+param deploymentScriptMSIPrinicipalId string
+
+@description('The resource Id of the deployment script managed identity.')
+param deploymentScriptMSIId string
+
+@description('The resource Id of the deployment script storage account.')
+param deploymentScriptStorageAccountResourceId string
+
+@description('Resource Id of the deployment script subnet.')
+param deploymentScriptSubnetResourceId string
 
 module msiRoleAssignmentScaleSet 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.1' = {
   name: 'msiRoleAssignmentScaleSet'
   params: {
-    principalId: deploymentScriptMSI.outputs.principalId
+    principalId: deploymentScriptMSIPrinicipalId
     resourceId: vmssResourceId
     roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
   }
@@ -34,7 +39,7 @@ module msiRoleAssignmentScaleSet 'br/public:avm/ptn/authorization/resource-role-
 module msiRoleAssignmentVnet 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.1' = {
   name: 'msiRoleAssignmentVnet'
   params: {
-    principalId: deploymentScriptMSI.outputs.principalId
+    principalId: deploymentScriptMSIPrinicipalId
     resourceId: vnetResourceId
     roleDefinitionId: '4d97b98b-1d4f-4787-a291-c67834d212e7'
   }
@@ -44,7 +49,7 @@ module msiRoleAssignmentVnet 'br/public:avm/ptn/authorization/resource-role-assi
 module msiRoleAssignmentLB 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.1' = {
   name: 'msiRoleAssignmentVnetLb'
   params: {
-    principalId: deploymentScriptMSI.outputs.principalId
+    principalId: deploymentScriptMSIPrinicipalId
     resourceId: lbResourceId
     roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
   }
@@ -53,7 +58,7 @@ module msiRoleAssignmentLB 'br/public:avm/ptn/authorization/resource-role-assign
 module msiRoleAssignmentNsg 'br/public:avm/ptn/authorization/resource-role-assignment:0.1.1' = {
   name: 'msiRoleAssignmentVnetNsg'
   params: {
-    principalId: deploymentScriptMSI.outputs.principalId
+    principalId: deploymentScriptMSIPrinicipalId
     resourceId: nsgResourceId
     roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
   }
@@ -68,7 +73,7 @@ module updateVMSS 'br/public:avm/res/resources/deployment-script:0.5.1' = {
     azCliVersion: '2.64.0'
     managedIdentities: {
       userAssignedResourceIds: [
-        deploymentScriptMSI.outputs.resourceId
+        deploymentScriptMSIId
       ]
     }
     environmentVariables: [
@@ -80,6 +85,11 @@ module updateVMSS 'br/public:avm/res/resources/deployment-script:0.5.1' = {
         name: 'vmssName'
         value: vmssName
       }
+    ]
+    storageAccountResourceId: deploymentScriptStorageAccountResourceId
+    containerGroupName: 'update-vmss'
+    subnetResourceIds: [
+      deploymentScriptSubnetResourceId
     ]
     cleanupPreference: 'OnSuccess'
     location: location

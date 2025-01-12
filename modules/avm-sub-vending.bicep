@@ -9,10 +9,10 @@ param subscriptionBillingScope string = 'providers/Microsoft.Billing/billingAcco
 module subscriptionVending 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
   name: uniqueString(deployment().name, resourceLocation)
   params: {
-    subscriptionAliasEnabled: true
-    subscriptionBillingScope: subscriptionBillingScope
     subscriptionAliasName: 'HR-ProjectPhoenix'
     subscriptionDisplayName: 'HR-ProjectPhoenix'
+    subscriptionAliasEnabled: true
+    subscriptionBillingScope: subscriptionBillingScope
     subscriptionWorkload: 'Production'
     subscriptionManagementGroupAssociationEnabled: true
     subscriptionManagementGroupId: 'alz-corp'
@@ -21,6 +21,17 @@ module subscriptionVending 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     virtualNetworkAddressSpace: [
       '10.0.0.0/16'
     ]
-    resourceProviders: {}
+    resourceProviders: {
+        'Microsoft.AVS': ['AzureServicesVm']
+    }
+    roleAssignmentEnabled: true
+    roleAssignments: [
+      {
+        definition: 'Contributor'
+        principalId: 'a9d32637-e42f-4e20-808c-83a6ed3d2874'
+        relativeScope: ''
+        principalType: 'Group'
+      }
+    ]
   }
 }

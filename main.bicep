@@ -8,6 +8,9 @@ param adminPassword string
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
+@description('The object id of the Phoenix Admin group.')
+param phoeinxAdminGroupObjectId string = 'a9d32637-e42f-4e20-808c-83a6ed3d2874'
+
 module networking 'modules/networking.bicep' = {
   name: 'networking'
   params: {
@@ -82,6 +85,10 @@ module utilities 'modules/utilities.bicep' = {
     lbResourceId: networking.outputs.lbResourceId
     nsgResourceId: networking.outputs.nsgId
     location: location
+    deploymentScriptMSIPrinicipalId: networking.outputs.deploymentScriptMSIPrincipalId
+    deploymentScriptMSIId: networking.outputs.deploymentScriptMSIId
+    deploymentScriptStorageAccountResourceId: networking.outputs.deploymentScriptStorageAccountResourceId
+    deploymentScriptSubnetResourceId: networking.outputs.deploymentScriptSubnetResourceId
   }
 }
 
