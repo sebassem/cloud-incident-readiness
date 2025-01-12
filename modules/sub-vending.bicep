@@ -34,6 +34,7 @@ module subscription 'br/public:avm/ptn/lz/sub-vending:0.2.4' = {
     virtualNetworkPeeringEnabled: virtualNetworkPeeringEnabled == 'No' ? false : true
     hubNetworkResourceId: hubNetworkResourceId
     virtualNetworkResourceGroupLockEnabled: false
+    roleAssignmentEnabled: !empty(workloadAdminGroup) ? true : false
     roleAssignments: !empty(workloadAdminGroup) ? [
       {
         definition: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
