@@ -99,7 +99,7 @@ module dsStorageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
     privateEndpoints: [
       {
         service: 'file'
-        subnetResourceId: vnet.properties.subnets[2].id
+        subnetResourceId: filter(vnet.properties.subnets, subnet => subnet.name == 'peSubnet')[0].id
         privateDnsZoneGroup: {
           name: 'default'
           privateDnsZoneGroupConfigs: [
@@ -226,8 +226,8 @@ module loadBalancer 'br/public:avm/res/network/load-balancer:0.4.1' = {
 output nsgId string = nsg.outputs.resourceId
 output natGatewayId string = natGateway.outputs.resourceId
 output virtualNetworkId string = vnet.id
-output virtualNetworkSubnetResourceId string = vnet.properties.subnets[0].id
-output deploymentScriptSubnetResourceId string = vnet.properties.subnets[1].id
+output virtualNetworkSubnetResourceId string = filter(vnet.properties.subnets, subnet => subnet.name == 'subnet001')[0].id
+output deploymentScriptSubnetResourceId string = filter(vnet.properties.subnets, subnet => subnet.name == 'dssubnet')[0].id
 output loadBalancerIpAddress string = lbPublicIpAddress.outputs.ipAddress
 output lbResourceId string = loadBalancer.outputs.resourceId
 output backendpools array = loadBalancer.outputs.backendpools
